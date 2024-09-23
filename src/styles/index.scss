@@ -1,0 +1,28 @@
+
+
+page {
+  background-color: #F6F6F6;
+  color: #333333;
+  font-family: PingFangSC-Regular;
+  overflow-wrap: break-word;
+}
+
+.scroll {
+  white-space: nowrap;
+}
+
+view, text {
+  box-sizing: border-box;
+}
+
+view,uni-view{
+  overflow-wrap: break-word;
+}
+
+
+uni-toast {
+  z-index: 1000000 !important;
+}
+.uni-sample-toast{
+  z-index: 1000000 !important;
+}

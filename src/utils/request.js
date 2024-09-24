@@ -79,9 +79,9 @@ http.interceptors.response.use(async (response) => {
     }
 
 
-    if (response.data?.code !== 200) {
+    if (response.data?.code != 200) {
         const _code = response.data?.code
-        if (_code === 401 || _code === 403) {
+        if (_code == 401 || _code == 403) {
             cleanStorage()
             return Promise.reject(response);
         }

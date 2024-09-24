@@ -8,7 +8,9 @@
     <view class="text-center bg-white px-base flex-1">
       <view class="pt-120rpx">
         <view class="text-32rpx text-hex-979797">星火云</view>
-        <view class="text-hex-333 price text-80rpx font-semibold">300</view>
+        <view class="text-hex-333 price text-80rpx font-semibold">{{
+          info?.quantity
+        }}</view>
       </view>
       <view class="mt-100rpx">
         <uv-button
@@ -38,18 +40,25 @@
 <script setup>
 import { onLoad } from '@dcloudio/uni-app'
 import { payMentApi } from '@/api/index'
-import { useUserStore } from '../../store/modules/user';
-import { ref } from 'vue'
+import { useUserStore } from '../../store/modules/user'
+import { ref, computed } from 'vue'
 const token = ref('')
 const orderId = ref('')
+const price = ref(0)
 const userStore = useUserStore()
+const isLoading = ref(false)
+const detail = ref({})
 
 onLoad((opt) => {
   token.value = opt.token
   orderId.value = opt.orderId
+  price.value = opt.price
   userStore.setToken(token.value)
-  getPayMent()
+  getDetail()
 })
+
+const payMentOpt = computed(() => detail.value?.payInfo ?? {})
+const info = computed(() => detail.value?.result ?? {})
 
 const getWxCode = () => {
   return new Promise((res, rej) => {
@@ -65,34 +74,41 @@ const getWxCode = () => {
   })
 }
 
-const getPayMent = async () => {
+const getDetail = async () => {
+  uni.showLoading({})
   try {
     const code = await getWxCode()
-console.log({
-      payType: 'T_MINIAPP',
-      code: code,
-      uuid: orderId.value,
-      type: 3,
-    });
 
-    return
     const resData = await payMentApi({
       payType: 'T_MINIAPP',
       code: code,
       uuid: orderId.value,
       type: 3,
     })
-    console.log(resData);
-    
-  } catch (error) {
-
+    detail.value = resData
+  } catch (e) {
+    console.log(e)
+  } finally {
+    uni.hideLoading()
   }
 }
 
-const onSubmit = () => {
-  uni.redirectTo({
-    url: '/pages/pay/result',
-  })
+const onSubmit = async () => {
+  if (isLoading.value) return
+
+  isLoading.value = true
+  try {
+    uni.requestPayment({
+      provider: 'wxpay',
+      ...payMentOpt.value,
+    })
+    uni.redirectTo({
+      url: `/pages/pay/result?type=success`,
+    })
+  } catch (error) {
+  } finally {
+    isLoading.value = false
+  }
 }
 </script>
 <style lang="scss" scoped>

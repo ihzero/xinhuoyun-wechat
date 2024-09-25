@@ -7,15 +7,27 @@
         </template>
       </uv-navbar>
       <view class="text-center bg-white px-base flex-1 pt-120rpx">
-        <view class="flex-center">
-          <uv-icon name="checkbox-mark" color="#16ad17" size="100rpx"></uv-icon>
-        </view>
-        <view class="text-32rpx text-hex-979797 mt-32rpx">支付成功</view>
+        <template v-if="isSuccess">
+          <view class="flex-center">
+            <uv-icon
+              name="checkbox-mark"
+              :color="`#16ad17`"
+              :size="100"
+            ></uv-icon>
+          </view>
+          <view class="text-32rpx text-hex-979797 mt-32rpx">支付成功</view>
+        </template>
+        <template v-else>
+          <view class="flex-center">
+            <uv-icon name="close" :color="`#ff0000`" :size="100"></uv-icon>
+          </view>
+          <view class="text-32rpx text-hex-979797">支付失败</view>
+        </template>
         <view class="mt-100rpx">
           <uv-button
             hover-class="none"
             open-type="launchApp"
-            app-parameter="success"
+            :app-parameter="type"
             binderror="launchAppError"
             customStyle="background: #16ad17; color: #fff"
             >返回APP</uv-button
@@ -29,11 +41,11 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-const tyoe = ref('')
+const type = ref('')
 
 onLoad((options) => {
-  tyoe.value = options.type
+  type.value = options.type
 })
 
-const isSuccess = computed(() => tyoe.value === 'success')
+const isSuccess = computed(() => type.value === 'success')
 </script>

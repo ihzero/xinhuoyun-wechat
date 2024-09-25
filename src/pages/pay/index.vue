@@ -101,9 +101,16 @@ const onSubmit = async () => {
     uni.requestPayment({
       provider: 'wxpay',
       ...payMentOpt.value,
-    })
-    uni.redirectTo({
-      url: `/pages/pay/result?type=success`,
+      success: (e) => {
+        uni.redirectTo({
+          url: `/pages/pay/result?type=success`,
+        })
+      },
+      fail: (e) => {
+        uni.redirectTo({
+          url: `/pages/pay/result?type=fail`,
+        })
+      },
     })
   } catch (error) {
   } finally {

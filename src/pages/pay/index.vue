@@ -7,7 +7,7 @@
     </uv-navbar>
     <view class="text-center bg-white px-base flex-1">
       <view class="pt-120rpx">
-        <view class="text-32rpx text-hex-979797">星火云</view>
+        <view class="text-32rpx text-hex-979797">云智</view>
         <view class="text-hex-333 price text-80rpx font-semibold">{{
           info?.quantity
         }}</view>

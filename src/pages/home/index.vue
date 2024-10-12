@@ -1,6 +1,6 @@
 <template>
   <view class="px-base">
-    <uv-navbar title="星火云" placeholder>
+    <uv-navbar title="云智" placeholder>
       <template #left>
         <view></view>
       </template>
